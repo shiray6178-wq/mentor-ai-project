@@ -1,3 +1,4 @@
+//קומפוננטת ההרשמה למערכת
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Navbar from './Navbar'
@@ -5,7 +6,9 @@ import Navbar from './Navbar'
 export default function Register({ onRegister, users }) {
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', password: '', confirmPassword: '', role: '' })
   const [error, setError] = useState('')
+  //פונקציה שמעדכנת את השדות בטופס ההרשמה
   const updateField = (event) => setFormData((currentData) => ({ ...currentData, [event.target.name]: event.target.value }))
+  //פונקציה שמטפלת בהרשמת המשתמש
   const submit = (event) => {
     event.preventDefault()
     if (formData.password !== formData.confirmPassword) return setError('הסיסמאות אינן תואמות')

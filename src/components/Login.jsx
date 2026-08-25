@@ -1,3 +1,4 @@
+//קומפוננטת התחברות
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Navbar from './Navbar'
@@ -15,6 +16,7 @@ function EyeIcon({ isVisible }) {
   )
 }
 
+//קומפוננטה שמציגה את טופס ההתחברות למערכת
 export default function Login({ onLogin }) {
   const [formData, setFormData] = useState({
     email: '',
@@ -24,12 +26,14 @@ export default function Login({ onLogin }) {
   const [error, setError] = useState('')
   const [visibleFields, setVisibleFields] = useState({ password: false })
 
+  //פונקציה שמעדכנת את השדות בטופס ההתחברות ומאפס את הודעת השגיאה
   const updateField = (event) => {
     const { name, value } = event.target
     setFormData((currentData) => ({ ...currentData, [name]: value }))
     setError('')
   }
 
+  //פונקציה שמטפלת בהתחברות המשתמש
   const handleSubmit = (event) => {
     event.preventDefault()
 
@@ -39,6 +43,7 @@ export default function Login({ onLogin }) {
     }
   }
 
+  //פונקציה שמאפשרת להציג או להסתיר את הסיסמה בשדה הסיסמה
   const togglePasswordVisibility = (fieldName) => {
     setVisibleFields((currentFields) => ({
       ...currentFields,
@@ -72,6 +77,7 @@ export default function Login({ onLogin }) {
               <option value="student">תלמיד</option>
             </select>
 
+          //אם יש שגיאה, מציגים את הודעת השגיאה
             {error && <p className="form-error" role="alert">{error}</p>}
             <button type="submit" className="submit-button">התחבר</button>
             <p className="form-link">אין לך חשבון? <Link to="/register">הרשמה למערכת</Link></p>

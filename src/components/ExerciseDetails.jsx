@@ -9,10 +9,13 @@ export default function ExerciseDetails({ exercises, onSubmit, role, user, onLog
   const [solution, setSolution] = useState('')
   const [mark, setMark] = useState(null)
 
+  // פונקציה שמדמה שליחת פתרון התרגיל וקבלת ציון אוטומטי
   const submitSolution = () => {
+    //אם לא כתב תשובה, לא נשלח הציון
     if (!solution.trim()) return
-    const score = Math.floor(Math.random() * 41) + 60
+    const score = Math.floor(Math.random() * 41) + 50
     setMark(score)
+    //קריאה לפונקציה מהAPP, שמוסיפה את הציון למערך הציונים
     onSubmit({ exerciseName: exercise.name, mark: score, message: 'הפתרון נקלט וקיבל ציון אוטומטי', solution })
   }
 
@@ -21,6 +24,7 @@ export default function ExerciseDetails({ exercises, onSubmit, role, user, onLog
       <Navbar role={role} user={user} onLogout={onLogout} />
       <div className="page-container">
         <div className="exercise-card exercise-details-page">
+        //אם קיים התרגיל, מציגים את הפרטים שלו, אחרת מציגים הודעה שהתרגיל לא נמצא
           {exercise ? (
             <>
               <Link className="back-to-exercises" to={role === 'teacher' ? '/teacher' : '/exercises'} aria-label="חזרה לרשימת התרגילים">→ חזרה לרשימת התרגילים</Link>
@@ -37,7 +41,9 @@ export default function ExerciseDetails({ exercises, onSubmit, role, user, onLog
               </div>
               <div className="exercise-prompt"><strong>השאלה לתרגיל</strong><br />{exercise.code}</div>
               <p className="details-note">קראו את השאלה, חשבו על הפתרון וכתבו תשובה מלאה במסך ההגשה.</p>
-              {role === 'student' && <div className="detail-answer-area"><label className="solution-label" htmlFor="detail-solution">התשובה שלך</label><textarea id="detail-solution" className="solution-input" value={solution} onChange={(event) => setSolution(event.target.value)} placeholder="כתבו כאן את הפתרון שלכם" rows="6" /><button type="button" className="submit-button" onClick={submitSolution}>שליחה וקבלת ציון</button>{mark !== null && <p className="detail-score">הציון שלך: {mark}%</p>}</div>}
+              {role === 'student' && <div className="detail-answer-area"><label className="solution-label" htmlFor="detail-solution">התשובה שלך</label><textarea id="detail-solution" className="solution-input" value={solution} 
+              onChange={(event) => setSolution(event.target.value)} placeholder="כתבו כאן את הפתרון שלכם" rows="6" /><button type="button" className="submit-button" onClick={submitSolution}>שליחה וקבלת ציון</button>
+              {mark !== null && <p className="detail-score">הציון שלך: {mark}%</p>}</div>}
               {role === 'teacher' && <Link className="submit-button details-link" to="/teacher">חזרה ללוח המורה</Link>}
             </>
           ) : (

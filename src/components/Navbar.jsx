@@ -1,3 +1,4 @@
+//קומפוננטת הניווט הראשית של המערכת
 import { NavLink } from 'react-router-dom'
 import { useState } from 'react'
 import brainImg from '../assets/image.png'
@@ -5,8 +6,11 @@ import { useUser } from '../context/useUser'
 
 export default function Navbar({ hideMenu = false, role, user, onLogout }) {
   const contextUser = useUser()
+  //אם יש משתמש בהקשר, נעדכן את המשתמש והפונקציה להתנתקות בהתאם
   user = contextUser?.user || user
+  //אם יש פונקציה להתנתקות בהקשר, נעדכן את הפונקציה בהתאם
   onLogout = contextUser?.onLogout || onLogout
+  //מצב שמנהל את הצגת פרטי המשתמש בתפריט
   const [showDetails, setShowDetails] = useState(false)
   const roleLabel = role === 'teacher' ? 'מורה' : 'תלמיד'
   const mainMenuPath = role === 'teacher' ? '/teacher' : '/exercises'
@@ -20,6 +24,7 @@ export default function Navbar({ hideMenu = false, role, user, onLogout }) {
         </div>
         <p className="subtitle">השותף שלך ללמידה</p>
       </header>
+      //הצגת תפריט המשתמש אם יש משתמש מחובר ואם לא הוסתר התפריט
       {user && !hideMenu && (
         <div className="user-menu">
           <div className="user-summary">
@@ -28,7 +33,9 @@ export default function Navbar({ hideMenu = false, role, user, onLogout }) {
           </div>
           <div className="user-actions">
             {role === 'teacher' && <NavLink to={mainMenuPath} className="user-action">תפריט ראשי</NavLink>}
+            //כפתור שמאפשר להציג או להסתיר את פרטי המשתמש בתפריט
             <button type="button" className="user-action" onClick={() => setShowDetails((isOpen) => !isOpen)}>פרטים</button>
+            //כפתור שמאפשר למשתמש להתנתק מהמערכת
             <button type="button" className="user-action logout-button" onClick={onLogout}>התנתקות</button>
           </div>
           {showDetails && (

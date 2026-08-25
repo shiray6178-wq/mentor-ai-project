@@ -1,8 +1,10 @@
+//קומפוננטה שמציגה את רשימת התרגילים שהוגשו על ידי התלמידים
 import Navbar from './Navbar'
 import { useState } from 'react'
 
 export default function ExerciseList({ grades, currentUser, role, user, onLogout }) {
   const [openGradeId, setOpenGradeId] = useState(null)
+  //סינון הציונים לפי המשתמש הנוכחי 
   const visibleGrades = role === 'student'
     ? grades.filter((grade) => grade.studentId === currentUser?.id || grade.studentName === currentUser?.name)
     : grades
@@ -25,6 +27,7 @@ export default function ExerciseList({ grades, currentUser, role, user, onLogout
               </tr>
             </thead>
             <tbody>
+              
               {visibleGrades.map((g, i) => (
                 <>
                   <tr>
