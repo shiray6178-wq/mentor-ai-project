@@ -24,7 +24,7 @@ export default function Navbar({ hideMenu = false, role, user, onLogout }) {
         </div>
         <p className="subtitle">השותף שלך ללמידה</p>
       </header>
-      //הצגת תפריט המשתמש אם יש משתמש מחובר ואם לא הוסתר התפריט
+      {/* מציגים את פרטי המשתמש רק אם יש משתמש מחובר והתפריט לא הוסתר */}
       {user && !hideMenu && (
         <div className="user-menu">
           <div className="user-summary">
@@ -33,9 +33,9 @@ export default function Navbar({ hideMenu = false, role, user, onLogout }) {
           </div>
           <div className="user-actions">
             {role === 'teacher' && <NavLink to={mainMenuPath} className="user-action">תפריט ראשי</NavLink>}
-            //כפתור שמאפשר להציג או להסתיר את פרטי המשתמש בתפריט
+            {/* כפתור לפתיחה ולסגירה של פרטי החשבון */}
             <button type="button" className="user-action" onClick={() => setShowDetails((isOpen) => !isOpen)}>פרטים</button>
-            //כפתור שמאפשר למשתמש להתנתק מהמערכת
+            {/* כפתור שמפעיל את פונקציית ההתנתקות */}
             <button type="button" className="user-action logout-button" onClick={onLogout}>התנתקות</button>
           </div>
           {showDetails && (

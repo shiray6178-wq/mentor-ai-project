@@ -24,7 +24,7 @@ export default function ExerciseDetails({ exercises, onSubmit, role, user, onLog
       <Navbar role={role} user={user} onLogout={onLogout} />
       <div className="page-container">
         <div className="exercise-card exercise-details-page">
-        //אם קיים התרגיל, מציגים את הפרטים שלו, אחרת מציגים הודעה שהתרגיל לא נמצא
+          {/* אם קיים התרגיל, מציגים את הפרטים שלו */}
           {exercise ? (
             <>
               <Link className="back-to-exercises" to={role === 'teacher' ? '/teacher' : '/exercises'} aria-label="חזרה לרשימת התרגילים">→ חזרה לרשימת התרגילים</Link>

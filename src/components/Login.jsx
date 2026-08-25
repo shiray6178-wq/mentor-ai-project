@@ -77,7 +77,7 @@ export default function Login({ onLogin }) {
               <option value="student">תלמיד</option>
             </select>
 
-          //אם יש שגיאה, מציגים את הודעת השגיאה
+            {/* אם יש שגיאה, מציגים את הודעת השגיאה */}
             {error && <p className="form-error" role="alert">{error}</p>}
             <button type="submit" className="submit-button">התחבר</button>
             <p className="form-link">אין לך חשבון? <Link to="/register">הרשמה למערכת</Link></p>

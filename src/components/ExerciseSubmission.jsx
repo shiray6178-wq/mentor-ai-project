@@ -13,7 +13,7 @@ export default function ExerciseSubmission({ exercises, role, user, onLogout }) 
 
   return (
     <section className="exercise-section" dir="rtl">
-      //תפריט ניווט שמותאם למשתמש הנוכחי ואפשרות התנתקות
+      {/* תפריט ניווט שמותאם למשתמש הנוכחי ואפשרות התנתקות */}
       <Navbar role={role} user={user} onLogout={onLogout} />
       <div className="page-container">
         <div className="exercise-card">
@@ -21,16 +21,13 @@ export default function ExerciseSubmission({ exercises, role, user, onLogout }) 
           <div className="exercise-filters">
             <select className="exercise-select" value={courseFilter} onChange={(event) => setCourseFilter(event.target.value)} aria-label="סינון לפי קורס">
               <option value="all">כל הקורסים</option>
-              //יצירת אפשרויות סינון לפי הקורסים הייחודיים
+              {/* יצירת אפשרויות סינון לפי הקורסים הייחודיים */}
               {courses.map((course) => <option key={course} value={course}>{course}</option>)}
             </select>
           </div>
           <div className="exercise-catalog">
             {filteredExercises.map((exercise) => (
-              //יצירת קישורים לכל תרגיל שמוביל לדף פרטי התרגיל
-              //כל תרגיל מקבל קישור משלו לפי הID שלו
               <Link className="exercise-catalog-item" key={exercise.id} to={`/exercise/${exercise.id}`}>
-                //הצגת פרטי התרגיל
                 <span className="catalog-course">{exercise.course}</span>
                 <strong>{exercise.name}</strong>
                 <span>{exercise.difficulty} · {exercise.points} נקודות</span>
