@@ -1,3 +1,4 @@
+//קומפוננטה שמציגה את פרטי התרגיל
 import { Link, useParams } from 'react-router-dom'
 import { useState } from 'react'
 import Navbar from './Navbar'

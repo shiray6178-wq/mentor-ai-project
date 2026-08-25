@@ -11,6 +11,7 @@ import ExerciseDetails from './components/ExerciseDetails'
 import UserProvider from './context/UserProvider'
 import { useEffect } from 'react'
 
+//רשימת התרגילים המקוריים
 const exercisesData = [
   { id: 1, name: "חיבור וחיסור עד 20", course: "מתמטיקה", difficulty: "מתחילים", points: 10, description: "פתרו את התרגילים וכתבו את דרך הפתרון בקצרה.", code: "8 + 7 = ?\n15 - 6 = ?\n12 + 5 = ?", dueDate: "2026-09-10" },
   { id: 2, name: "שברים פשוטים", course: "מתמטיקה", difficulty: "מתחילים", points: 15, description: "השוו בין השברים והסבירו איזה שבר גדול יותר.", code: "1/2 ___ 2/4\n3/4 ___ 1/4", dueDate: "2026-09-17" },
@@ -19,6 +20,7 @@ const exercisesData = [
   { id: 5, name: "מערכת השמש", course: "מדעים", difficulty: "בינוני", points: 20, description: "כתבו שלושה פרטים שלמדתם והסבירו מדוע השמש חשובה לכדור הארץ.", code: "נושא: השמש, כדור הארץ וכוכבי הלכת", dueDate: "2026-10-08" },
 ]
 
+//פונקציה שמוודאת שהתלמיד או המורה מחוברים לפני גישה לדפים מסוימים
 function RoleRoute({ user, allowedRole, children }) {
   if (!user) return <Navigate to="/login" replace />
   const allowedRoles = Array.isArray(allowedRole) ? allowedRole : [allowedRole]
@@ -26,13 +28,18 @@ function RoleRoute({ user, allowedRole, children }) {
   return children
 }
 
+// פונקציה הראשית של האפליקציה
 function App() {
   const navigate = useNavigate()
+  //רשימת המשתמשים
   const [users, setUsers] = useState(() => JSON.parse(localStorage.getItem('mentor-users') || '[]'))
+  //רשימת הציונים
   const [grades, setGrades] = useState(() => JSON.parse(localStorage.getItem('mentor-grades') || '[]'))
+  //המשתמש הנוכחי
   const [currentUser, setCurrentUser] = useState(() => JSON.parse(localStorage.getItem('mentor-current-user') || 'null'))
+  //רשימת התרגילים
   const [exercises, setExercises] = useState(() => JSON.parse(localStorage.getItem('mentor-exercises-v2') || JSON.stringify(exercisesData)))
-
+//שמירת הנתונים ב-localStorage בכל שינוי
   useEffect(() => localStorage.setItem('mentor-users', JSON.stringify(users)), [users])
   useEffect(() => localStorage.setItem('mentor-grades', JSON.stringify(grades)), [grades])
   useEffect(() => localStorage.setItem('mentor-exercises-v2', JSON.stringify(exercises)), [exercises])
@@ -41,6 +48,7 @@ function App() {
     else localStorage.removeItem('mentor-current-user')
   }, [currentUser])
 
+  //פונקציית הרשמה של משתמש חדש
   const onRegister = (user) => {
     const newUser = { ...user, id: Date.now() }
     setUsers((currentUsers) => [...currentUsers, newUser])
@@ -48,10 +56,12 @@ function App() {
     navigate(newUser.role === 'student' ? '/exercises' : '/teacher')
   }
 
+  //פונקציית שמירת הציון של התלמיד
   const onSubmit = (grade) => {
     setGrades((currentGrades) => [...currentGrades, { ...grade, studentId: currentUser?.id, studentName: currentUser?.name, id: Date.now() }])
   }
 
+  // פונקציית התחברות של משתמש קיים
   const onLogin = (user) => {
     const existingUser = users.find((candidate) => candidate.email.toLowerCase() === user.email.toLowerCase() && candidate.password === user.password && candidate.role === user.role)
     if (!existingUser) return false
@@ -60,14 +70,17 @@ function App() {
     return true
   }
 
+  //פונקציית הוספת תרגיל
   const onAddExercise = (exercise) => {
     setExercises((currentExercises) => [...currentExercises, { ...exercise, id: Date.now() }])
   }
 
+  //פונקציית מחיקת תרגיל
   const onDeleteExercise = (exerciseId) => {
     setExercises((currentExercises) => currentExercises.filter((exercise) => exercise.id !== exerciseId))
   }
 
+  //פונקציית הוספת תלמיד
   const onAddStudent = (student) => {
     const newStudent = {
       ...student,
@@ -80,11 +93,14 @@ function App() {
     setUsers((currentUsers) => [...currentUsers, newStudent])
   }
 
+  //פונקציית מחיקת תלמיד
+  //גם נמחק התלמיד וגם כל הציונים שלו
   const onDeleteStudent = (studentId) => {
     setUsers((currentUsers) => currentUsers.filter((student) => student.id !== studentId))
     setGrades((currentGrades) => currentGrades.filter((grade) => grade.studentId !== studentId))
   }
 
+  // פונקציית התנתקות של המשתמש
   const onLogout = () => {
     setCurrentUser(null)
     navigate('/login')
