@@ -1,17 +1,21 @@
+// קומפוננטה ללוח המורה - הצגת סטטיסטיקות, רשימת תרגילים והוספת תרגיל חדש 
 import { useState } from 'react'
 import Navbar from './Navbar'
 
+//אובייקט שמייצג תרגיל ריק, לשימוש באיפוס הטופס לאחר הוספת תרגיל
 const emptyExercise = { name: '', course: '', description: '', dueDate: '', difficulty: 'מתחילים', points: 10, code: '' }
 
 export default function TeacherDashboard({ exercises, grades, onAddExercise, onDeleteExercise, role, user, onLogout }) {
   const [formData, setFormData] = useState(emptyExercise)
   const [message, setMessage] = useState('')
 
+  //פונקציה שמעדכנת את שדות הטופס בהתאם לשינויים של המשתמש
   const updateField = (event) => {
     const { name, value } = event.target
     setFormData((currentData) => ({ ...currentData, [name]: value }))
   }
 
+  //פונקציה שמוסיפה תרגיל חדש למאגר התרגילים
   const addExercise = (event) => {
     event.preventDefault()
     onAddExercise({ ...formData, points: Number(formData.points) })

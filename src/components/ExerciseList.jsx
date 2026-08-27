@@ -38,7 +38,7 @@ export default function ExerciseList({ grades, currentUser, role, user, onLogout
                     <td>{g.message}</td>
                     {role === 'teacher' && <td><button type="button" className="view-solution-button" onClick={() => setOpenGradeId(openGradeId === (g.id || i) ? null : (g.id || i))}>{openGradeId === (g.id || i) ? 'הסתר' : 'צפה בפתרון'}</button></td>}
                   </tr>
-                  {role === 'teacher' && openGradeId === (g.id || i) && <tr className="solution-row"><td colSpan="6"><div className="submitted-solution"><strong>הפתרון של {g.studentName || 'התלמיד'}:</strong><pre>{g.solution || 'לא צורף פתרון'}</pre></div></td></tr>}
+                  {role === 'teacher' && openGradeId === (g.id || i) && <tr className="solution-row"><td colSpan="6"><div className="submitted-solution"><strong>הפתרון של {g.studentName || 'התלמיד'}:</strong><pre>{g.solution || 'לא צורף פתרון'}</pre>{g.attachment && <p><a href={g.attachment.data} download={g.attachment.name}>הורדת הקובץ: {g.attachment.name}</a></p>}</div></td></tr>}
                 </>
               ))}
               {!visibleGrades.length && <tr><td colSpan={role === 'teacher' ? 6 : 4} className="empty-state">עדיין לא קיימות הגשות</td></tr>}

@@ -1,15 +1,20 @@
+//קומפוננטה לניהול תלמידים - הוספה ומחיקה של תלמידים
 import Navbar from './Navbar'
 import { useState } from 'react'
 
 export default function StudentManagement({ users, onAddStudent, onDeleteStudent, role, user, onLogout }) {
+  //שומר את השדות בטופס הוספת תלמיד
   const [student, setStudent] = useState({ firstname: '', lastname: '', fonenumber: '', email: '', password: '' })
+  //משמש להציג הודעה לאחר הוספת תלמיד בהצלחה
   const [message, setMessage] = useState('')
 
+  // פונקציה שמעדכנת את השדות בטופס הוספת תלמיד
   const updateStudent = (event) => {
     const { name, value } = event.target
     setStudent((currentStudent) => ({ ...currentStudent, [name]: value }))
   }
 
+  // פונקציה שמוסיפה תלמיד חדש לרשימת התלמידים ומאפס את השדות בטופס
   const addStudent = (event) => {
     event.preventDefault()
     onAddStudent(student)
@@ -58,6 +63,7 @@ export default function StudentManagement({ users, onAddStudent, onDeleteStudent
               </tr>
             </thead>
             <tbody>
+              {/* רשימה של כל התלמידים */}
               {users.filter((studentUser) => studentUser.role === 'student' || !studentUser.role).map(s => (
                 <tr key={s.id}>
                   <td>{s.id}</td>

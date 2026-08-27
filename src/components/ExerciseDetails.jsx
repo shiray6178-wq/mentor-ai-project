@@ -7,16 +7,29 @@ export default function ExerciseDetails({ exercises, onSubmit, role, user, onLog
   const { exerciseId } = useParams()
   const exercise = exercises.find((item) => String(item.id) === exerciseId)
   const [solution, setSolution] = useState('')
+  const [attachment, setAttachment] = useState(null)
   const [mark, setMark] = useState(null)
 
   // פונקציה שמדמה שליחת פתרון התרגיל וקבלת ציון אוטומטי
+  const handleAttachmentChange = (event) => {
+    const file = event.target.files[0]
+    if (!file) {
+      setAttachment(null)
+      return
+    }
+
+    const reader = new FileReader()
+    reader.onload = () => setAttachment({ name: file.name, type: file.type, data: reader.result })
+    reader.readAsDataURL(file)
+  }
+
   const submitSolution = () => {
     //אם לא כתב תשובה, לא נשלח הציון
-    if (!solution.trim()) return
+    if (!solution.trim() && !attachment) return
     const score = Math.floor(Math.random() * 41) + 50
     setMark(score)
     //קריאה לפונקציה מהAPP, שמוסיפה את הציון למערך הציונים
-    onSubmit({ exerciseName: exercise.name, mark: score, message: 'הפתרון נקלט וקיבל ציון אוטומטי', solution })
+    onSubmit({ exerciseName: exercise.name, mark: score, message: 'הפתרון נקלט וקיבל ציון אוטומטי', solution, attachment })
   }
 
   return (
@@ -42,7 +55,7 @@ export default function ExerciseDetails({ exercises, onSubmit, role, user, onLog
               <div className="exercise-prompt"><strong>השאלה לתרגיל</strong><br />{exercise.code}</div>
               <p className="details-note">קראו את השאלה, חשבו על הפתרון וכתבו תשובה מלאה במסך ההגשה.</p>
               {role === 'student' && <div className="detail-answer-area"><label className="solution-label" htmlFor="detail-solution">התשובה שלך</label><textarea id="detail-solution" className="solution-input" value={solution} 
-              onChange={(event) => setSolution(event.target.value)} placeholder="כתבו כאן את הפתרון שלכם" rows="6" /><button type="button" className="submit-button" onClick={submitSolution}>שליחה וקבלת ציון</button>
+              onChange={(event) => setSolution(event.target.value)} placeholder="כתבו כאן את הפתרון שלכם" rows="6" /><label className="solution-label" htmlFor="solution-file">צירוף קובץ</label><input id="solution-file" type="file" onChange={handleAttachmentChange} /><button type="button" className="submit-button" onClick={submitSolution}>שליחה וקבלת ציון</button>
               {mark !== null && <p className="detail-score">הציון שלך: {mark}%</p>}</div>}
               {role === 'teacher' && <Link className="submit-button details-link" to="/teacher">חזרה ללוח המורה</Link>}
             </>
